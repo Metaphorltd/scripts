@@ -14,3 +14,16 @@ function Global:Write-Log {
         write-host  $message
     }
 }
+function Global:Write-Inf {
+    param (
+        [string]$message
+    )
+    Write-Log -message $message -level "INF"
+}
+
+function Global:Write-Err {
+    param (
+        [string]$message
+    )
+    Write-Log -message $message -level "ERR"
+}
