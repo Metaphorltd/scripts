@@ -7,7 +7,7 @@ function PublishDockerImage {
         [Parameter(Mandatory)][string]$username,
         [Parameter(Mandatory)][string]$password,
         [Parameter(Mandatory)][string]$image,
-        [string]$dockerfie = "Dockerfile",
+        [string]$dockerfile = "Dockerfile",
         [string]$tag = "latest",
         [string]$context = "."
     )
