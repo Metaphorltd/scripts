@@ -12,5 +12,5 @@ pwsh -c '& { . ([scriptblock]::Create((iwr https://raw.githubusercontent.com/met
 ```
 Note: in powershell, we dont need pwsh -c to run a script, we can just run the script directly i.e
 ```pwsh
-& { echo "hello world" }
+& { . ([scriptblock]::Create((iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/hello.ps1).Content)); Hello -message world }
 ```

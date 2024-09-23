@@ -12,7 +12,6 @@ function GetAuthToken {
 
     # get discovery document
     $document = Invoke-RestMethod -Uri "$authUrl/.well-known/openid-configuration" -Method Get
-    Write-Inf "Discovery document received successfully"
     $tokenEndpoint = $document.token_endpoint
     Write-Inf "Token endpoint: $tokenEndpoint"
     $body = @{
