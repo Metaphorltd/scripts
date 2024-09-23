@@ -2,7 +2,7 @@
 iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1).Content
 $shellExUrl ="https://shellex.metaphorltd.com"
 
-function Invoke-Docker-Publish {
+function PublishDockerImage {
     param (
         [Parameter(Mandatory)][string]$username,
         [Parameter(Mandatory)][string]$password,
@@ -22,7 +22,7 @@ function Invoke-Docker-Publish {
     docker push "${username}/${image}:${tag}"
 }
 
-function Invoke-Refresh-App {
+function RefreshApp {
     param (
         [Parameter(Mandatory)][string]$token,
         [Parameter(Mandatory)][string]$appId
@@ -33,4 +33,5 @@ function Invoke-Refresh-App {
     if ($? -eq $false) {
         throw 'Error in refreshing the app'
     }
+    return "App refreshed successfully"
 }

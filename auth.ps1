@@ -4,8 +4,8 @@ function Get-AuthorizationToken {
     [OutputType([string])]
     param (
         [string]$clientId = "rems.auth.devops.client",
-        [string]$clientSecret,
-        [string]$scopes,
+        [Parameter(Mandatory)][string]$clientSecret,
+        [Parameter(Mandatory)][string]$scopes,
         [string]$audience?,
         [string]$authUrl = "https://auth.metaphorltd.com"
     )
