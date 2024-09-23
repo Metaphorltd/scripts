@@ -1,39 +1,11 @@
-function Global:Write-Log {
-    param (
-        [string]$message,
-        [string]$level = "INF"
-    )
-    $timestamp = Get-Date -Format "HH:mm:ss"
-    if ($level -eq "ERR") {
-        Write-Host -NoNewline "[$timestamp "
-        Write-Host -NoNewline "$level] " -ForegroundColor Red
-        write-host  $message
-    }else{
-        Write-Host -NoNewline "[$timestamp "
-        Write-Host -NoNewline "$level] " -ForegroundColor Green
-        write-host  $message
-    }
-}
-function Global:Write-Inf {
-    param (
-        [string]$message
-    )
-    Write-Log -message $message -level "INF"
-}
-
-function Global:Write-Err {
-    param (
-        [string]$message
-    )
-    Write-Log -message $message -level "ERR"
-}
+iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1).Content
 
 function Get-AuthorizationToken {
     [OutputType([string])]
     param (
         [string]$clientId = "rems.auth.devops.client",
-        [Parameter(Mandatory)][string]$clientSecret,
-        [Parameter(Mandatory)][string]$scopes,
+        [string]$clientSecret,
+        [string]$scopes,
         [string]$audience?,
         [string]$authUrl = "https://auth.metaphorltd.com"
     )
