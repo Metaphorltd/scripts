@@ -31,17 +31,12 @@ function Global:Write-Err {
 function Global:ThrowOnError
 {
     param(
-        $isSuccess,
+        [bool]$isSuccess,
         [string]$message?)
     if(-not $isSuccess)
     {
-        if($message)
-        {
-            throw $message
-        }else{
-            throw "Error while executing the script"
-        }
-       
+        $message = if ($null -eq $message) { "Error while executing the script" } else { $message }
+        Write-Error -Message $message -Exception (New-Object -TypeName System.Exception) -ErrorAction Stop
     }
 }
 
