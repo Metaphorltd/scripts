@@ -14,8 +14,9 @@ function PublishDockerImage {
     Write-Inf "Logging in to Docker Hub"
     docker login -u $username -p $password
 
-    $imagePath = "${username}/${image}:${tag}"
+    
     Write-Inf "Building the Docker image"
+    $imagePath = "${username}/${image}:${tag}"
     docker build $context -f $dockerfile -t $imagePath
 
     Write-Inf "Pushing the Docker image: $imagePath"
