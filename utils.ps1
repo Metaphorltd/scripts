@@ -27,3 +27,29 @@ function Global:Write-Err {
     )
     Write-Log -message $message -level "ERR"
 }
+
+function Global:ThrowOnError
+{
+    param(
+        $isSuccess,
+        [string]$message?)
+    if(-not $isSuccess)
+    {
+        if($message)
+        {
+            throw $message
+        }else{
+            throw "Error while executing the script"
+        }
+       
+    }
+}
+
+function Global:ExitOnError
+{
+    param($isSuccess)
+    if(-not $isSuccess)
+    {
+        exit 1
+    }
+}
