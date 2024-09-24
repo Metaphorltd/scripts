@@ -31,8 +31,6 @@ function RefreshApp {
 
     $url = "$shellExUrl/kube/apps/$appId/refresh"
     Invoke-RestMethod -Uri $url -Method Get -Headers @{"Authorization" = "Bearer $token" }
-    if ($? -eq $false) {
-        throw 'Error in refreshing the app'
-    }
+    ThrowOnError $? 'Error in refreshing the app'
     return "App refreshed successfully"
 }
