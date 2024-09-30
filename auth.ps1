@@ -3,7 +3,7 @@ iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1).C
 function GetAuthToken {
     [OutputType([string])]
     param (
-        [string]$clientId = "rems.auth.devops.client",
+        [string]$clientId = "Met.Devops.Client",
         [Parameter(Mandatory)][string]$clientSecret,
         [Parameter(Mandatory)][string]$scopes,
         [string]$audience?,
