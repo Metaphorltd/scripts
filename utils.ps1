@@ -14,13 +14,15 @@ function Global:Write-Log {
         write-host  $message
     }
 }
-function Global:Log-Info {
+
+function Global:Write-Info {
     param (
         [string]$message
     )
     Write-Log -message $message -level "INF"
 }
-function Global:Log-Error {
+
+function Global:Write-Error {
     param (
         [string]$message
     )
