@@ -1,4 +1,5 @@
 iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1).Content
+
 function UpdateDNSRecord {
     param (
         [Parameter(Mandatory)][string]$domain,

@@ -1,17 +1,23 @@
-function CreatePRDeployment {
-    param (
-        [Parameter(Mandatory)][string]$dockerImage,
-        [Parameter(Mandatory)][string]$prId,
-        [Parameter(Mandatory)][string]$dockerUser,
-        [Parameter(Mandatory)][string]$domain,
-        [Parameter(Mandatory)][string]$service
-    )
+iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1).Content
 
+function CreateDeployment {
+    param (
+        [Parameter(Mandatory)][string]$kustomizePath,
+        [Parameter(Mandatory)][string]$dockerImage,
+        [Parameter(Mandatory)][string]$app,
+        [Parameter(Mandatory)][string]$domain,
+        [string]$dockerUser = "abdullahgb",
+        [string]$buildId = "latest",
+        [string]$namespace = "pr"
+    )
     $ErrorActionPreference = 'Stop'
-    Write-Inf "Setting deployment configurations"
-    kustomize edit set nameprefix "pr$prId-"
-    kustomize edit set label "app:pr$prId"
-    kustomize edit set image "$dockerUser/red.portal=$dockerImage"
+    Push-Location $kustomizePath
+    Write-Info "Setting deployment configurations"
+    kustomize edit set nameprefix "$app-"
+    kustomize edit set namespace "$namespace"
+    kustomize edit set label "app:$app"
+    $imagePath = "${dockerUser}/${dockerImage}:${buildId}"
+    kustomize edit set image "user/app=$imagePath"
 
     $ingressPatch = @"
     - op: replace
@@ -24,12 +30,13 @@ function CreatePRDeployment {
             path: /
             backend:
               service:
-                name: $service
+                name: $app-service
                 port:
                   number: 80
 "@
     Write-Output $ingressPatch | Out-File ingress.yaml
-    kustomize edit add patch --kind Ingress --name pr-ingress --path ingress.yaml
+    kustomize edit add patch --kind Ingress --name ingress --path ingress.yaml
     kustomize build . | kubectl apply -k .
-    Write-Inf "Deployment created successfully"
+    Write-Info "Deployment created successfully"
+    Pop-Location
 }

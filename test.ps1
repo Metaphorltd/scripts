@@ -1,12 +1,8 @@
 # $token = & { . ([scriptblock]::Create((iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/auth.ps1).Content)); GetAuthToken -clientSecret P@kistan7861324 -scopes ShellEx }
-iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1).Content
-Log-Info "Hello"
+. ./kube.ps1
 
-function Global:Write-Info {
-    param (
-        [string]$message
-    )
-    Write-Log -message $message -level "INF"
-}
-
-Write-Info "HEllo"
+CreateDeployment -kustomizePath "D:\k8s-deployments\red\kustomize\red.portal\environments\pr" `
+    -dockerImage "red.portal" `
+    -app "pr47-red-portal" `
+    -buildId "764" `
+    -domain "pr47-portal.metaphorltd.com"
