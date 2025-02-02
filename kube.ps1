@@ -26,6 +26,9 @@ function CreateDeployment {
         [string]$namespace = "pr"
     )
     $ErrorActionPreference = 'Stop'
+    Import-Script "/kusomize.ps1"
+    Invoke-UpdateKustomizeContent
+    
     Push-Location $kustomizePath
     Write-Info "Setting deployment configurations"
     kustomize edit set nameprefix "$app-"

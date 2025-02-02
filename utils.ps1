@@ -1,3 +1,14 @@
+function Global:Import-Script {
+    param (
+        [string]$scriptPath
+    )
+    if ($scriptPath -match '^http') {
+        iex (iwr $scriptPath).Content
+    } else {
+        iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main$scriptPath).Content
+    }
+}
+
 function Global:Write-Log {
     param (
         [string]$message,
