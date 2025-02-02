@@ -1,12 +1,21 @@
 function Global:Import-Script {
     param (
-        [string]$scriptPath
+        [string]$path,
+        [string]$branch = "main",
+        [string]$repo = "scripts",
+        [string]$owner = "metaphorltd"
     )
-    if ($scriptPath -match '^http') {
-        iex (iwr $scriptPath).Content
-    } else {
-        iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main$scriptPath).Content
+
+    if ($path -match '^http') {
+        iex (iwr $path).Content
     }
+    else {
+        if ($path -notmatch '/') {
+            $path = "/$path"
+        }
+        iex (iwr https://raw.githubusercontent.com/metaphorltd/$repo/$branch$path).Content
+    }
+    
 }
 
 function Global:Write-Log {

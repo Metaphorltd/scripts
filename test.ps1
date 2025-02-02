@@ -37,7 +37,7 @@
 
 [string]$output = "./temp"
 if (-not (Test-Path $output)) {
-    New-Item -ItemType Directory -Path $output
+New-Item -ItemType Directory -Path $output
 }
 Write-Host "Downloading files..."
 $response = Invoke-WebRequest -Uri "https://github.com/metaphorltd/scripts/archive/dev.tar.gz" -OutFile "$output/scripts.tar.gz"
