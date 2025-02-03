@@ -70,15 +70,14 @@ function Global:Import-Script {
         [string]$repo   = "scripts",
         [string]$owner  = "metaphorltd"
     )
-
+    Write-Info "Importing script from $path"
     if ($path -match '^http') {
-        iex (iwr $path).Content
+        . ([scriptblock]::Create((iwr $path).Content))
     }
     else {
         if ($path -notmatch '/') {
             $path = "/$path"
         }
-        iex (iwr https://raw.githubusercontent.com/$owner/$repo/$branch$path).Content
+        . ([scriptblock]::Create((iwr https://raw.githubusercontent.com/$owner/$repo/$branch$path).Content))
     }
-    
 }
