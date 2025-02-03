@@ -3,12 +3,17 @@ iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1).C
 function Invoke-UpdateKustomizeContent {
     param (
         [string]$output = "./temp",
-        [string]$branch = "main"
+        [string]$owner  = "metaphorltd",
+        [string]$repo   = "scripts",
+        [string]$branch = "main",
+        [string]$path   = "kustomize"
     )
     if (-not (Test-Path $output)) {
         New-Item -ItemType Directory -Path $output
     }
     Write-Info "Updating kustomize content..."
-    $response = Invoke-WebRequest -Uri "https://github.com/metaphorltd/scripts/archive/$branch.tar.gz" -OutFile "$output/scripts.tar.gz"
-    tar -xzvf "$output/scripts.tar.gz" -C $output --strip-components=2 "scripts-$branch/kustomize"
+    Invoke-WebRequest -Uri "https://github.com/$owner/$repo/archive/$branch.tar.gz" -OutFile "$output/$repo.tar.gz"
+    ThrowOnError $?
+    tar -xzvf "$output/$repo.tar.gz" -C $output --strip-components = 2 "$repo-$branch/$path"
+    return "$output/$repo-$branch/$path"
 }

@@ -1,6 +1,6 @@
 iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1).Content
 
-$shellExUrl ="https://shellex.metaphorltd.com"
+$shellExUrl = "https://shellex.metaphorltd.com"
 function RefreshApp {
     param (
         [Parameter(Mandatory)][string]$token,

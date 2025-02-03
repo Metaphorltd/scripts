@@ -1,6 +1,6 @@
 iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1).Content
 
-$shellExUrl ="https://shellex.metaphorltd.com"
+$shellExUrl = "https://shellex.metaphorltd.com"
 
 function PublishDockerImage {
     param (
@@ -8,8 +8,8 @@ function PublishDockerImage {
         [Parameter(Mandatory)][string]$password,
         [Parameter(Mandatory)][string]$image,
         [string]$dockerfile = "Dockerfile",
-        [string]$tag = "latest",
-        [string]$context = "."
+        [string]$tag        = "latest",
+        [string]$context    = "."
     )
     Write-Inf "Logging in to Docker Hub"
     docker login -u $username -p $password

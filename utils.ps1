@@ -1,23 +1,3 @@
-function Global:Import-Script {
-    param (
-        [string]$path,
-        [string]$branch = "main",
-        [string]$repo = "scripts",
-        [string]$owner = "metaphorltd"
-    )
-
-    if ($path -match '^http') {
-        iex (iwr $path).Content
-    }
-    else {
-        if ($path -notmatch '/') {
-            $path = "/$path"
-        }
-        iex (iwr https://raw.githubusercontent.com/metaphorltd/$repo/$branch$path).Content
-    }
-    
-}
-
 function Global:Write-Log {
     param (
         [string]$message,
@@ -81,4 +61,24 @@ function Global:ExitOnError
     {
         exit 1
     }
+}
+
+function Global:Import-Script {
+    param (
+        [Parameter(Mandatory)][string]$path,
+        [string]$branch = "main",
+        [string]$repo   = "scripts",
+        [string]$owner  = "metaphorltd"
+    )
+
+    if ($path -match '^http') {
+        iex (iwr $path).Content
+    }
+    else {
+        if ($path -notmatch '/') {
+            $path = "/$path"
+        }
+        iex (iwr https://raw.githubusercontent.com/$owner/$repo/$branch$path).Content
+    }
+    
 }

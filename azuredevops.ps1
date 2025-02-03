@@ -8,7 +8,7 @@ function CommentOnPR {
     )
 
     $previewUrl = "$domain"
-    $markdown = @"
+    $markdown   = @"
     ## Preview Environment
     |Service |Url|
     |--------|---|
@@ -17,7 +17,7 @@ function CommentOnPR {
 
     $body = @{
         comments = @(@{ parentCommentId = 0; content = $markdown; commentType = 1 })
-        status = 4
+        status   = 4
     }
 
     $header = @{

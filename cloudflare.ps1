@@ -10,8 +10,8 @@ function UpdateDNSRecord {
 
     $url = "https://api.cloudflare.com/client/v4/zones/$zoneId/dns_records"
     $recordData = @{
-        type = "CNAME"
-        name = "$domain"
+        type    = "CNAME"
+        name    = "$domain"
         content = $serverIp
         proxied = $true
     }

@@ -10,7 +10,7 @@ function UpdateAuthURLs {
         [Parameter(Mandatory)][string]$scope
     )
 
-    $previewUrl = "$domain"
+    $previewUrl    = "$domain"
     $tokenEndpoint = (Invoke-RestMethod -Uri "$authUrl/.well-known/openid-configuration").token_endpoint
 
     $response = Invoke-RestMethod -Uri $tokenEndpoint -Method Post -Headers @{ "Content-Type" = "application/x-www-form-urlencoded" } `
@@ -20,10 +20,10 @@ function UpdateAuthURLs {
         throw "Error obtaining access token"
     }
 
-    $token = $response.access_token
+    $token  = $response.access_token
     $header = @{ Authorization = "Bearer $token" }
-    $url = "$authApiUrl/api/Clients/$clientId/uris"
-    $body = @{ Url = $previewUrl }
+    $url    = "$authApiUrl/api/Clients/$clientId/uris"
+    $body   = @{ Url = $previewUrl }
 
     Invoke-RestMethod -Uri $url -Method Put -Headers $header -Body ($body | ConvertTo-Json) -ContentType "application/json"
     Write-Inf "Auth URLs updated successfully"
