@@ -13,6 +13,7 @@ iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/utils.ps1).Co
 # . ./kustomize.ps1
 # . ([scriptblock]::Create((iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/kustomize.ps1).Content))
 $kustomizePath = Invoke-UpdateKustomizeContent -branch "dev"
+Write-Info $kustomizePath
 # DeployKustomize  -app "pr47-red-portal" -path "red-portal" -dockerImage "red.portal" -buildId "764" -domain "pr47-portal.metaphorltd.com" 
 # . ./globals.ps1
 # $scriptPath = "https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1"
