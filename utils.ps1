@@ -78,6 +78,6 @@ function Global:Import-Script {
         if ($path -notmatch '/') {
             $path = "/$path"
         }
-        . ([scriptblock]::Create((iwr https://raw.githubusercontent.com/$owner/$repo/$branch$path).Content))
+        return ([scriptblock]::Create((iwr https://raw.githubusercontent.com/$owner/$repo/$branch$path).Content))
     }
 }

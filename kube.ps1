@@ -27,8 +27,7 @@ function DeployKustomize {
         [string]$environment = "pr"
     )
     $ErrorActionPreference = 'Stop'
-    . ./utils.ps1
-    Import-Script -path "/kustomize.ps1" -branch "dev"
+    . (Import-Script -path "/kustomize.ps1" -branch "dev")
     $kustomizePath = Invoke-UpdateKustomizeContent -branch "dev"
     $kustomizePath = "$kustomizePath/$path/environments/$environment"
     
