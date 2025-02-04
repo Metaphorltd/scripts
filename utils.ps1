@@ -62,3 +62,22 @@ function Global:ExitOnError
         exit 1
     }
 }
+
+function Global:Import-Script {
+    param (
+        [Parameter(Mandatory)][string]$path,
+        [string]$branch = "main",
+        [string]$repo   = "scripts",
+        [string]$owner  = "metaphorltd"
+    )
+    Write-Info "Importing script from $path"
+    if ($path -match '^http') {
+        . ([scriptblock]::Create((iwr $path).Content))
+    }
+    else {
+        if ($path -notmatch '/') {
+            $path = "/$path"
+        }
+        return ([scriptblock]::Create((iwr https://raw.githubusercontent.com/$owner/$repo/$branch$path).Content))
+    }
+}
