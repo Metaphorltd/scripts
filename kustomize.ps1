@@ -15,5 +15,5 @@ function Invoke-UpdateKustomizeContent {
     Invoke-WebRequest -Uri "https://github.com/$owner/$repo/archive/$branch.tar.gz" -OutFile "$output/$repo.tar.gz"
     ThrowOnError $?
     tar -xzvf "$output/$repo.tar.gz" -C $output --strip-components=2 "$repo-$branch/$path"
-    return "$output/$repo-$branch/$path"
+    return "$output/$path"
 }
