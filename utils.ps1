@@ -1,3 +1,4 @@
+$ErrorActionPreference = "Stop"
 function Global:Write-Log {
     param (
         [string]$message,
