@@ -4,7 +4,6 @@ function ReFetchDeployment {
       [Parameter(Mandatory)][string]$deployment,
       [Parameter(Mandatory)][string]$namespace
   )
-  
   Write-Info "Scaling Kubernetes deployment to 0..."
   kubectl scale deployment $deployment --replicas 0 -n $namespace
   ThrowOnError $?
@@ -30,7 +29,6 @@ function DeployKustomize {
     . (Import-Script -path "/kustomize.ps1" -branch "dev")
     $kustomizePath = Invoke-UpdateKustomizeContent -branch "dev"
     $kustomizePath = "$kustomizePath/$path/environments/$environment"
-    
     Push-Location $kustomizePath
     Write-Info "Setting deployment configurations"
     kustomize edit set nameprefix "$app-"
@@ -40,19 +38,19 @@ function DeployKustomize {
     kustomize edit set image "user/app=$imagePath"
 
     $ingressPatch = @"
-    - op      : replace
-      path    : /spec/rules/0
-      value   : 
-      host    : "$domain"
-      http    : 
-      paths   : 
-    - pathType: Prefix
-      path    : /
-      backend : 
-      service : 
-      name    : $app-service
-      port    : 
-      number  : 80
+    - op: replace
+      path: /spec/rules/0
+      value:
+        host: "$domain"
+        http:
+          paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: $app-service
+                port:
+                  number: 80
 "@
     Write-Output $ingressPatch | Out-File ingress.yaml
     kustomize edit add patch --kind Ingress --name ingress --path ingress.yaml

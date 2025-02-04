@@ -1,26 +1,9 @@
+iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/utils.ps1).Content
 # # $token = & { . ([scriptblock]::Create((iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/auth.ps1).Content)); GetAuthToken -clientSecret P@kistan7861324 -scopes ShellEx }
 # . ./utils.ps1
 # . ([scriptblock]::Create((iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/utils.ps1).Content))
 # iex (iwr ).Content
 
-function Global:Import-Script {
-    param (
-        [Parameter(Mandatory)][string]$path,
-        [string]$branch = "main",
-        [string]$repo = "scripts",
-        [string]$owner = "metaphorltd"
-    )
-    # Write-Info "Importing script from $path"
-    if ($path -match '^http') {
-        . ([scriptblock]::Create((iwr $path).Content))
-    }
-    else {
-        if ($path -notmatch '/') {
-            $path = "/$path"
-        }
-        return ([scriptblock]::Create((iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/kustomize.ps1).Content))
-    }
-}
 
 . (Import-Script -path "/kustomize.ps1" -branch "dev")
 # . $script;

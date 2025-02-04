@@ -1,4 +1,4 @@
-iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/globals.ps1).Content
+iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1).Content
 
 function GetAuthToken {
     [OutputType([string])]
