@@ -26,7 +26,7 @@ function DeployKustomize {
         [string]$environment = "pr"
     )
     $ErrorActionPreference = 'Stop'
-    . (Import-Script -path "/kustomize.ps1" -branch "dev")
+    . (Import-Script "/kustomize.ps1" -branch "dev")
     $kustomizePath = Invoke-UpdateKustomizeContent -branch "dev"
     $kustomizePath = "$kustomizePath/$path/environments/$environment"
     Push-Location $kustomizePath
@@ -55,6 +55,7 @@ function DeployKustomize {
     Write-Output $ingressPatch | Out-File ingress.yaml
     kustomize edit add patch --kind Ingress --name ingress --path ingress.yaml
     kustomize build . | kubectl apply -k .
+    ThrowOnError $?
     Write-Info "Deployment created successfully"
     Pop-Location
 }
