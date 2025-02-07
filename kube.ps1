@@ -28,7 +28,7 @@ function DeployKustomize {
     $ErrorActionPreference = 'Stop'
     . (Import-Script "/kustomize.ps1" -branch "dev")
     $kustomizePath = Invoke-UpdateKustomizeContent -branch "dev"
-    $kustomizePath = "$kustomizePath/$path/environments/$environment"
+    $kustomizePath = "$kustomizePath/$path"
     Push-Location $kustomizePath
     Write-Info "Setting deployment configurations"
     kustomize edit set nameprefix "$app-"
