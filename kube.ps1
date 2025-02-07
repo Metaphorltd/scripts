@@ -22,8 +22,7 @@ function DeployKustomize {
         [Parameter(Mandatory)][string]$dockerImage,
         [string]$dockerUser  = "abdullahgb",
         [string]$buildId     = "latest",
-        [string]$namespace   = "pr",
-        [string]$environment = "pr"
+        [string]$namespace   = "pr"
     )
     $ErrorActionPreference = 'Stop'
     . (Import-Script "/kustomize.ps1" -branch "dev")
