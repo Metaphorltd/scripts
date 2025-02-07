@@ -52,6 +52,7 @@ function Global:ThrowOnError
     {
         $message = if ($null -eq $message) { "Error while executing the script" } else { $message }
         Write-Error -Message $message -Exception (New-Object -TypeName System.Exception) -ErrorAction Stop
+        throw $message
     }
 }
 
