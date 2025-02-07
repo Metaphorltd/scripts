@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: red-portal-deployment
+  namespace: red
+  labels:
+    app: red-portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: red-portal
+  template:
+    metadata:
+      namespace: red
+      labels:
+        app: red-portal
+    spec:
+      containers:
+      - name: red-portal
+        image: abdullahgb/red.portal:latest
+        ports:
+          - containerPort: 8080
+            name: "http-server"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: red-portal-service
+  namespace: red
+spec:
+  selector:
+    app: red-portal
+  ports:
+    - port: 80
+      targetPort: 8080
