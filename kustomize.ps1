@@ -2,7 +2,7 @@ iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1).C
 
 function Invoke-UpdateKustomizeContent {
     param (
-        [string]$output = "./temp",
+        [string]$output = "temp",
         [string]$owner  = "metaphorltd",
         [string]$repo   = "scripts",
         [string]$branch = "main",
