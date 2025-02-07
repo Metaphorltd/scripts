@@ -5,15 +5,15 @@ iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/utils.ps1).Co
 # iex (iwr ).Content
 
 
-. (Import-Script -path "/kustomize.ps1" -branch "dev")
+# . (Import-Script -path "/kustomize.ps1" -branch "dev")
 # . $script;
 # Invoke-Expression $path
 
 # . ./kustomize.ps1
 # . ./kustomize.ps1
 # . ([scriptblock]::Create((iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/kustomize.ps1).Content))
-$kustomizePath = Invoke-UpdateKustomizeContent -branch "dev"
-Write-Info $kustomizePath
+# $kustomizePath = Invoke-UpdateKustomizeContent -branch "dev"
+# Write-Info $kustomizePath
 # DeployKustomize  -app "pr47-red-portal" -path "red-portal" -dockerImage "red.portal" -buildId "764" -domain "pr47-portal.metaphorltd.com" 
 # . ./globals.ps1
 # $scriptPath = "https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1"
@@ -53,3 +53,23 @@ Write-Info $kustomizePath
 # Write-Host "Extracting files..."
 # tar -xzvf "$output/scripts.tar.gz" -C $output --strip-components=2 "scripts-dev/kustomize"
 # Write-Host "Extraction complete."
+
+
+# Script: '([scriptblock]::Create((iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/kube.ps1).Content))'
+# Arguments: -app red-portal
+#       -path red-portal
+#       -dockerImage red.portal
+#       -buildId 771
+#       -domain pr47.metaphorltd.com
+#       -namespace pr
+#       -environment pr
+
+# Script: '([scriptblock]::Create((iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/kube.ps1).Content))'
+# Arguments: -app pr47
+#       -path red-portal/environments/pr
+#       -dockerImage red.portal
+#       -buildId 771
+#       -namespace pr
+#       -domain pr47.metaphorltd.com
+. (Import-Script -path "/kube.ps1" -branch "dev")
+DeployKustomize -app pr47 -path red-portal/environments/pr -dockerImage red.portal -buildId 771 -namespace pr -domain pr47.metaphorltd.com
