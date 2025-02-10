@@ -26,9 +26,7 @@ function GetAuthToken {
     $body     = $body.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }
     $body     = $body -join '&'
     $response = Invoke-RestMethod -Uri $tokenEndpoint -Method Post -Headers @{"Content-Type" = "application/x-www-form-urlencoded" } -Body $body
-    if ($? -eq $false) {
-        throw 'Error in getting access token'
-    }
+    ThrowOnError $?
     Write-Inf "Access token received successfully"
     return $response.access_token
-}
+}   
