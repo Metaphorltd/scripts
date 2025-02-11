@@ -29,4 +29,4 @@ function GetAuthToken {
     ThrowOnError $?
     Write-Inf "Access token received successfully"
     return $response.access_token
-}   
+}

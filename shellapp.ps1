@@ -1,6 +1,7 @@
 iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1).Content
 
-$shellExUrl = "https://shellex.metaphorltd.com"
+# $shellExUrl = "https://shellex.metaphorltd.com"
+$shellExUrl = "http://localhost:5050"
 function RefreshApp {
     param (
         [Parameter(Mandatory)][string]$token,
@@ -20,7 +21,7 @@ function DeployApp {
         [Parameter(Mandatory)][string]$body
     )
     $url = "$shellExUrl/kube/apps/$appId/deploy"
-    Invoke-RestMethod -Uri $url -Method Post -Headers @{"Authorization" = "Bearer $token" } -Body $body
+    Invoke-RestMethod -Uri $url -Method Post -Headers @{"Authorization" = "Bearer $token" } -Body $body -ContentType "application/json"
     ThrowOnError $? 'Error in deploying the app'
     return "App deployed successfully"
 }

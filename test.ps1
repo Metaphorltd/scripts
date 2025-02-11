@@ -71,5 +71,16 @@ iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/utils.ps1).Co
 #       -buildId 771
 #       -namespace pr
 #       -domain pr47.metaphorltd.com
-. (Import-Script -path "/kube.ps1" -branch "dev")
-DeployKustomize -app pr47 -path red-portal/environments/pr -dockerImage red.portal -buildId 771 -namespace pr -domain pr47.metaphorltd.com
+# . (Import-Script -path "/kube.ps1" -branch "dev")
+# DeployKustomize -app pr47 -path red-portal/environments/pr -dockerImage red.portal -buildId 771 -namespace pr -domain pr47.metaphorltd.com
+
+. .\auth.ps1
+$token = GetAuthToken -clientSecret "P@kistan7861324" -scopes "ShellEx"
+Write-Host $token
+. .\shellapp.ps1
+$body = @{
+    BuildId = "771"
+    PrId = "47"
+}
+$body = $body | ConvertTo-Json 
+DeployApp -token $token -appId ce42cf5f-3967-4ff7-ad25-dec414b2067d -body $body
