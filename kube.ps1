@@ -28,6 +28,7 @@ function DeployKustomize {
     . (Import-Script "/kustomize.ps1")
     $kustomizePath = Invoke-UpdateKustomizeContent
     $kustomizePath = "$kustomizePath/$path"
+    Write-Info "Kustomize: $kustomizePath"
     Push-Location $kustomizePath
     Write-Info "Setting deployment configurations"
     kustomize edit set nameprefix "$app-"
