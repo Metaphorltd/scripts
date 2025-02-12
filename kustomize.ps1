@@ -24,9 +24,8 @@ function Invoke-TryInstallKustomize{
     $result = Get-Command kustomize -ErrorAction SilentlyContinue;
     if(!$result -or $force){
         Write-Info  "Kustomize not found. Installing..."
-        curl --silent --location --remote-name "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v5.3.0/kustomize_kustomize.v5.3.0_linux_amd64"
-        chmod a+x kustomize_kustomize.v5.3.0_linux_amd64
-        sudo mv kustomize_kustomize.v5.3.0_linux_amd64 /usr/local/bin/kustomize
+        curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+        sudo install -o root -g root -m 0755 kustomize /usr/local/bin/kustomize
         kustomize version
     }else
     {
