@@ -8,7 +8,7 @@ function Invoke-UpdateKustomizeContent {
         [string]$branch = "main",
         [string]$path   = "kustomize"
     )
-    $tempPath = $output;
+    Write-info "OutputPath: $output"
     if (-not (Test-Path $output)) {
         New-Item -ItemType Directory -Path $output
     }
@@ -16,5 +16,5 @@ function Invoke-UpdateKustomizeContent {
     Invoke-WebRequest -Uri "https://github.com/$owner/$repo/archive/$branch.tar.gz" -OutFile "$output/$repo.tar.gz"
     ThrowOnError $?
     iex tar -xzvf "$output/$repo.tar.gz" -C $output --strip-components=2 "$repo-$branch/$path"
-    return $tempPath
+    return $output
 }
