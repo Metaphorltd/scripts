@@ -16,3 +16,20 @@ function Invoke-UpdateKustomizeContent {
     ThrowOnError $?
     tar -xzvf "$output/$repo.tar.gz" -C "$output" --strip-components=2 "$repo-$branch/$path"
 }
+
+function Invoke-TryInstallKustomize{
+    param (
+        [bool]$force =$false
+    )
+    $result = Get-Command kustomize -ErrorAction SilentlyContinue;
+    if(!$result -or $force){
+        Write-Info  "Kustomize not found. Installing..."
+        curl --silent --location --remote-name "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v3.2.3/kustomize_kustomize.v3.2.3_linux_amd64"
+        chmod a+x kustomize_kustomize.v3.2.3_linux_amd64
+        sudo mv kustomize_kustomize.v3.2.3_linux_amd64 /usr/local/bin/kustomize
+        kustomize version
+    }else
+    {
+        Write-Info  "Kustomize found"
+    }
+}

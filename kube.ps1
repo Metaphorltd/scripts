@@ -30,6 +30,7 @@ function DeployKustomize {
     Invoke-UpdateKustomizeContent -output $output
     $kustomizePath = "$output/$path"
     Push-Location $kustomizePath
+    Invoke-TryInstallKustomize
     Write-Info "Setting deployment configurations"
     kustomize edit set nameprefix "$app-"
     kustomize edit set namespace "$namespace"
