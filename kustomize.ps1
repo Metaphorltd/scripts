@@ -32,3 +32,49 @@ function Invoke-TryInstallKustomize{
         Write-Info  "Kustomize found"
     }
 }
+
+function DeployKustomize {
+    param (
+        [Parameter(Mandatory)][string]$app,
+        [Parameter(Mandatory)][string]$path,
+        [Parameter(Mandatory)][string]$domain,
+        [Parameter(Mandatory)][string]$dockerImage,
+        [string]$dockerUser  = "abdullahgb",
+        [string]$buildId     = "latest",
+        [string]$namespace   = "pr"
+    )
+    $ErrorActionPreference = 'Stop'
+    $output = 'temp'
+    Invoke-UpdateKustomizeContent -output $output
+    $kustomizePath = "$output/$path"
+    Push-Location $kustomizePath
+    Invoke-TryInstallKustomize
+    Write-Info "Setting deployment configurations"
+    kustomize edit set nameprefix "$app-"
+    kustomize edit set namespace "$namespace"
+    kustomize edit set label "app:$app"
+    $imagePath = "${dockerUser}/${dockerImage}:${buildId}"
+    kustomize edit set image "user/app=$imagePath"
+
+    $ingressPatch = @"
+    - op: replace
+      path: /spec/rules/0
+      value:
+        host: "$domain"
+        http:
+          paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: $app-service
+                port:
+                  number: 80
+"@
+    Write-Output $ingressPatch | Out-File ingress.yaml
+    kustomize edit add patch --kind Ingress --name ingress --path ingress.yaml
+    kustomize build . | kubectl apply -k .
+    ThrowOnError $?
+    Write-Info "Deployment created successfully"
+    Pop-Location
+}
