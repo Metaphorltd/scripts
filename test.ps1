@@ -12,9 +12,10 @@ iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/utils.ps1).Co
 # . ./kustomize.ps1
 # . ./kustomize.ps1
 # . ([scriptblock]::Create((iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/kustomize.ps1).Content))
-# $kustomizePath = Invoke-UpdateKustomizeContent -branch "dev"
+#  Invoke-UpdateKustomizeContent -branch "dev"
+#  TryInstallKustomize
 # Write-Info $kustomizePath
-# DeployKustomize  -app "pr47-red-portal" -path "red-portal" -dockerImage "red.portal" -buildId "764" -domain "pr47-portal.metaphorltd.com" 
+# DeployKustomize  -app "pr47-red-portal" -path "red-portal" -dockerImage "red.portal" -buildId "764" -domain "pr47-portal.metaphorltd.com"
 # . ./globals.ps1
 # $scriptPath = "https://raw.githubusercontent.com/metaphorltd/scripts/main/utils.ps1"
 # $res = $scriptPath -match '^http'
@@ -71,16 +72,34 @@ iex (iwr https://raw.githubusercontent.com/metaphorltd/scripts/dev/utils.ps1).Co
 #       -buildId 771
 #       -namespace pr
 #       -domain pr47.metaphorltd.com
-# . (Import-Script -path "/kube.ps1" -branch "dev")
+# . (Import-Script -path "/kube.ps1")
+# . .\kustomize.ps1
 # DeployKustomize -app pr47 -path red-portal/environments/pr -dockerImage red.portal -buildId 771 -namespace pr -domain pr47.metaphorltd.com
 
-. .\auth.ps1
-$token = GetAuthToken -clientSecret "P@kistan7861324" -scopes "ShellEx"
-Write-Host $token
-. .\shellapp.ps1
-$body = @{
-    BuildId = "771"
-    PrId = "47"
+# . .\auth.ps1
+# . (Import-script "/auth.ps1")
+# $token = GetAuthToken -clientSecret "P@kistan7861324" -scopes "ShellEx"
+# Write-Host $token
+# # . .\shellapp.ps1
+function KustomizeDeploy {
+    . (Import-script "/shellapp.ps1")
+    $ErrorActionPreference = 'Stop'
+    $appId = "ce42cf5f-3967-4ff7-ad25-dec414b2067d"
+    $shellExUrl = "http://localhost:5050"
+    $token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBCNUQ4RTU3MTlFQTI3NjQ2QzZEQTJBQzM5MEIwMjZCIiwidHlwIjoiYXQrand0In0.eyJpc3MiOiJodHRwczovL2F1dGgubWV0YXBob3JsdGQuY29tIiwibmJmIjoxNzM5NjY4MDk5LCJpYXQiOjE3Mzk2NjgwOTksImV4cCI6MTczOTY3MTY5OSwiYXVkIjoiU2hlbGxFeCIsInNjb3BlIjpbIlNoZWxsRXgiXSwiY2xpZW50X2lkIjoiTWV0LkRldm9wcy5DbGllbnQifQ.A2bqcPhCerFhxHWOqn1hkfn6ck-Rqp8Ai_ohq7_9fEyyg5eRlO2uyou1Q7K3MR2ZWstn_l0y6Ct_7In9HhukaIjCkacifwtvus0KhgFN4YKHXy98DK3RZk6zqMsWPMkeFM-DO1A2ciZ7FVE5W1ABngA2MAay8BDhVqiF40kqD2jtUPH05M1gq0rh7ziP7caWOWdbmdsl1rVoSJ7C3cHOq-AMNZ1jiAXteJXc8x0cqD6hKCM4KecJXbvqnRqbQCk5NF8CeLsTq6af8z04v4px_uPSoe5Mug9TUo_WIzLmyLZltl2-H9wg41zeyYPtQ2IntcFZ_WAvVGxKMYY_XAe3DQ"
+    $body = @{
+        BuildId = "804"
+        PrId = "48"
+    }
+    $body = $body | ConvertTo-Json
+    $url = "$shellExUrl/kube/apps/$appId/deploy"
+    Invoke-RestMethod -Uri $url -Method Post -Headers @{"Authorization" = "Bearer $token" } -Body $body -ContentType "application/json"
 }
-$body = $body | ConvertTo-Json 
-DeployApp -token $token -appId ce42cf5f-3967-4ff7-ad25-dec414b2067d -body $body
+function RefreshApp {
+    . .\auth.ps1
+    $token = GetAuthToken -clientSecret "P@kistan7861324" -scopes "ShellEx"
+    . ./shellapp.ps1
+    $appId = "de42cf5f-3967-4ff7-ad25-dec414b2067d"
+    RefreshApp -token $token -appId $appId
+}
+# ReFetchDeployment  -deployment "red-api-deployment" -namespace "red" -buildId "807"
